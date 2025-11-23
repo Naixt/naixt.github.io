@@ -7,9 +7,43 @@
     <script type="module" src="main.js"></script>
 </head>
 <body>
-    <div id="controls" style="position: fixed; top: 0; right: 0;">
+    <!-- <div id="controls" style="position: fixed; top: 0; right: 0;">
         <button id="swap-perspective">Swap perspective</button>
+    </div> -->
+    <div class="naixt-application">
+        <div class="naixt-panel interface-view info-panel">
+            <h1>Naixt</h1>
+            <button class="solo-mode">Solo mode</button>
+            <button class="peer-host">Host as peer</button>
+            <button class="peer-connect">Connect with peer</button>
+            <button disabled>Spectate peer</button>
+        </div>
+        <div class="naixt-panel host-view info-panel hidden">
+            <h2>Host</h2>
+            <p class="host-status">(You should not be seeing this.)</p>
+            <button class="host-return">Back</button>
+        </div>
+        <div class="naixt-panel connect-view info-panel hidden">
+            <h2>Connect</h2>
+            <p class="connect-status">(You should not be seeing this.)</p>
+            <input class="connect-id">
+            <button class="connect-return">Back</button>
+        </div>
+        <div class="naixt-panel spectate-view info-panel hidden">
+            <h2>Spectate</h2>
+            <p class="spectate-status">(You should not be seeing this.)</p>
+            <button class="spectate-return">Back</button>
+        </div>
+        <div class="naixt-panel game-view hidden">
+            <div class="game-area"></div>
+            <div class="control-area">
+                <h2>Chat</h2>
+                <div class="chat-record"></div>
+                <input class="chat-input">
+            </div>
+        </div>
     </div>
-    <div id="game-area"></div>
+    <div class="popup-container hidden">
+    </div>
 </body>
 </html>
