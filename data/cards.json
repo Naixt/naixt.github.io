@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Fighter",
+        "cost": 1,
+        "health": 1,
+        "power": 2
+    },
+    {
+        "name": "Guardian",
+        "cost": 1,
+        "health": 2,
+        "power": 1
+    },
+    {
+        "name": "Spellslinger",
+        "cost": 2,
+        "health": 1,
+        "power": 1
+    },
+    {
+        "name": "Ranger",
+        "cost": 1,
+        "health": 1,
+        "power": 1
+    }
+]
