@@ -7,7 +7,9 @@ import { Popup } from "./lib/popup.js";
 import { PeerConnection } from "./lib/peer.js";
 import cardsDatabase from "./data/cards.json" with { type: "json" };
 import { NaixtLocalStorage } from "./lib/storage.js";
-import { PanelFocuser } from "./lib/panel.js";
+import { PanelFocuser } from "./lib/panelFocus.js";
+import { MainMenuPanel } from "./lib/panels/mainMenu.js";
+import { LobbyPanel } from "./lib/panels/lobby.js";
 
 window.addEventListener("load", function () {
     let panelEngine = new PanelFocuser();
@@ -20,68 +22,11 @@ window.addEventListener("load", function () {
 
     let peer = new PeerConnection();
     /**** main menu interface panel ****/
-    let lobbyPeers = document.querySelector(".lobby-peers");
-    panelEngine.addButtonTransition(".connect", "lobby-view", () => {
-        let peerIds = document.querySelectorAll(".my-peer-id");
-        lobbyPeers.textContent = "";
-        const refresh = () => {
-            lobbyPeers.textContent = "";
-            peer.getPeerList().then(list => {
-                list.forEach(id => {
-                    let connectButton = makeElement("button.connect-peer", "Connect");
-                    lobbyPeers.appendChild(makeElement("li", [
-                        connectButton,
-                        makeElement("span.their-peer-id", id),
-                    ]));
-                });
-                if(list.length === 0) {
-                    lobbyPeers.appendChild(makeElement("li", "(nothing to see here!)"));
-                }
-            });
-        };
-        if(!peer) {
-            peerIds.forEach(el => el.textContent = "Connecting...");
-        }
-        // TODO: advertise metadata about connection
-        peer.establishPeerId().then(id => {
-            peerIds.forEach(el => el.textContent = id);
-            refresh();
-            let waitingPopup, metadata;
-            peer.addEventListener("connectionRequest", ev => {
-                // TODO: queue multiple connection requests
-                metadata = ev.detail;
-                console.log("Connection details:", metadata);
-                waitingPopup = Popup.withTitleAndContent(
-                    "Incoming connection",
-                    `Accept connection from ${metadata.name}? (Peer id ${metadata.id})`,
-                    ["Accept", "Deny"],
-                );
-                waitingPopup.addEventListener("accept", ev => {
-                    let { name } = ev.detail;
-                    if(name === "Accept") {
-                        peer.acceptConnection(metadata.id);
-                        panelEngine.focus("game-view");
-                    }
-                    else {
-                        peer.rejectConnection(metadata.id);
-                    }
-                });
-                waitingPopup.addEventListener("cancel", () => peer.rejectConnection(metadata.id));
-                waitingPopup.deploy();
-            }, { once: true });
-            
-            peer.addEventListener("connectionRequestCancelled", ev => {
-                waitingPopup.kill();
-                Popup.withTitleAndContent("Request cancelled", `${metadata.name} (id ${metadata.id}) cancelled their request`, ["OK"])
-                    .deploy();
-            }, { once: true });
-        });
-        document.querySelector(".lobby-refresh").addEventListener("click", refresh);
-    });
-    // TODO: REMOVE; TESTING
-    document.querySelector(".connect").click();
+    panelEngine.addPanel(MainMenuPanel, ".interface-view", { peer });
+
     /**** lobby interface panel ****/
-    lobbyPeers.addEventListener("click", ev => {
+    panelEngine.addPanel(LobbyPanel, ".lobby-view", { peer });
+    this.document.querySelector(".lobby-peers").addEventListener("click", ev => {
         if(ev.target.classList.contains("connect-peer")) {
             let peerId = ev.target.parentElement.querySelector(".their-peer-id");
             assert(peerId, "No peer ID found");
@@ -129,10 +74,12 @@ window.addEventListener("load", function () {
         statusMessage.textContent = "Please enter a Peer ID (doesn't work yet)";
     });
     */
-    panelEngine.addButtonTransition(".interface-options", "options-view", () => {
+
+    // TODO: READDD
+    /*panelEngine.#addButtonTransition(".interface-options", "options-view", () => {
         optionsPeerServer.value = NaixtLocalStorage.get("peerServer");
         syncOptionsVisualState();
-    });
+    });*/
 
     /**** options view panel ****/
     let optionsPeerServer = document.querySelector(".options-peer-server");
@@ -147,7 +94,8 @@ window.addEventListener("load", function () {
         NaixtLocalStorage.set("peerServer", optionsPeerServer.value);
         syncOptionsVisualState();
     });
-    panelEngine.addButtonTransition(".options-return", "interface-view");
+    // TODO: READDDDDD
+    // panelEngine.#addButtonTransition(".options-return", "interface-view");
 
     /**** host view panel ****/
     // panelEngine.addButtonTransition(".host-return", "interface-view");
