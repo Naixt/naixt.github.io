@@ -19,7 +19,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p {
-    margin: 5px;
+    margin: 5px 0;
+}
+
+.naixt-panel > article {
+    padding: 15px;
 }
 
 button {
@@ -103,7 +107,7 @@ button[disabled], button[disabled]:hover {
 }
 
 .game-view > * {
-    overflow: none;
+    overflow: hidden;
 }
 .game-view > .game-area {
     grid-area: 1 / 1 / 2 / 2;

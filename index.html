@@ -13,17 +13,26 @@
     <div class="naixt-application">
         <div class="naixt-panel interface-view info-panel">
             <h1>Naixt</h1>
-            <button class="solo-mode">Solo mode</button>
-            <button class="peer-host">Host as peer</button>
-            <button class="peer-connect">Connect with peer</button>
-            <button disabled>Spectate peer</button>
+            <button class="connect">Connect to Lobby</button>
+            <!-- <button class="solo-mode">Solo mode</button> -->
+            <!-- <button class="peer-connect">Connect with peer</button> -->
+            <!-- <button disabled>Spectate peer</button> -->
             <button class="interface-options">Options</button>
+        </div>
+        <div class="naixt-panel lobby-view hidden">
+            <article>
+                <h1>Naixt</h1>
+                <p>Your ID: <span class="my-peer-id">(you shouldn't see this)</span></p>
+                <h2>Lobby <button class="lobby-refresh">Refresh</button></h2>
+                <ul class="lobby-peers"></ul>
+            </article>
         </div>
         <div class="naixt-panel options-view info-panel hidden">
             <div><label>Peer server: <input class="options-peer-server"></label></div>
             <button class="options-save" disabled>Save</button>
             <button class="options-return">Back</button>
         </div>
+        <!--
         <div class="naixt-panel host-view info-panel hidden">
             <h2>Host</h2>
             <p class="host-status">(You should not be seeing this.)</p>
@@ -39,7 +48,7 @@
             <h2>Spectate</h2>
             <p class="spectate-status">(You should not be seeing this.)</p>
             <button class="spectate-return">Back</button>
-        </div>
+        </div>-->
         <div class="naixt-panel game-view hidden">
             <div class="game-area"></div>
             <div class="control-area">
