@@ -43,7 +43,6 @@ window.addEventListener("load", function () {
             peerIds.forEach(el => el.textContent = "Connecting...");
         }
         // TODO: advertise metadata about connection
-        peer ??= new PeerConnection();
         peer.establishPeerId().then(id => {
             peerIds.forEach(el => el.textContent = id);
             refresh();
@@ -160,7 +159,28 @@ window.addEventListener("load", function () {
     // TODO
 
     /**** game view panel ****/
-    // TODO
+    // TODO: add button for mobile users?
+    let chatInput = document.querySelector(".chat-input");
+    let chatRecord = document.querySelector(".chat-record");
+    const appendChatMessage = ({ from, content }) => {
+        chatRecord.appendChild(makeElement("div", [
+            makeElement("strong", from + ": "),
+            makeElement("span", content),
+        ]));
+    };
+    chatInput.addEventListener("keydown", ev => {
+        if(ev.key === "Enter") {
+            // submit
+            peer.broadcastMessage(chatInput.value);
+            appendChatMessage({ from: "'me' (fix)", content: chatInput.value });
+            // TODO: relate to my metadata
+            chatInput.value = "";
+        }
+    });
+    peer.addEventListener("chatMessage", ev => {
+        let { content, from } = ev.detail;
+        appendChatMessage({ from, content });
+    });
 
     // TODO: remove debug interface stuff
     window.controller = controller; // TODO: remove debug
